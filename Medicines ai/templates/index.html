@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medi-Help</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        function showMore(elementId) {
+            const aboutSection = document.getElementById(elementId);
+            aboutSection.style.display = aboutSection.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>&nbsp;&nbsp;&nbsp;&nbsp;Medi-Help</h1>
+        <div class="search-box">
+            <form class="search-form" action="/search" method="post">
+                <label for="symptoms">Share Your Sufferings Here:</label>
+                <input type="text" id="symptoms" name="symptoms" required>
+                <b><button type="submit">Help!</button></b>
+            </form>
+        </div>
+
+        {% if results %}
+            <div class="results">
+                {% for result in results %}
+                    <div class="medicine">
+                        <h2>{{ result.name }}</h2>
+                        <img src="{{ result.image }}" alt="{{ result.name }}" class="medicine-image">
+                        <button class="show-more-btn" onclick="showMore('about-{{ loop.index }}')">Show More</button>
+                        <div id="about-{{ loop.index }}" style="display: none;">
+                            <p>{{ result.about|safe }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AI Model Constructed By Rudransh Raghuvanshi</p>
+        {% endif %}
+    </div>
+</body>
+</html>
